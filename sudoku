@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basit Bir Sudoku Oyunu 26.11.2023</title>
+    <style>
+      body {
+          font-family: 'Arial', sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+          background-color: #6E00BF;
+      }
+
+      .sudoku-board {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 10px;
+      }
+
+      .box {
+          display: grid;
+          grid-template-columns: repeat(3, 60px);
+          grid-template-rows: repeat(3, 60px);
+          gap: 2px;
+          border: 2px solid #333;
+          background-color: #48027C;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .cell {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 1.5em;
+          width: 60px;
+          height: 60px;
+          border: 1px solid #333;
+          box-sizing: border-box;
+          cursor: pointer;
+          transition: background-col 0.3s #E0FF2C;
+      }
+
+      .cell:hover {
+          background-color: #f0f0f0;
+      }
+
+      .cell:nth-child(3n), .cell:nth-child(3n-1) {
+          border-right: 2px solid #333;
+      }
+
+      .cell:nth-child(9n), .cell:nth-child(9n-1) {
+          border-right: 2px solid #333;
+      }
+
+      .cell:nth-child(9n)~.cell {
+          border-bottom: 2px solid #333;
+      }
+
+      .editable {
+          background-color: #F0FF75;
+    </style>
+  </head>
+  <body>
+    <div class="sudoku-board" id="sudoku-board"></div>
+
+    <script>
+      function createSudokuBoard() {
+        const board = document.getElementById('sudoku-board');
+
+        for (let boxIndex = 0; boxIndex < 9; boxIndex++) {
+          const box = document.createElement('div');
+          box.classList.add('box');
+
+          for (let i = 1; i <= 3; i++) {
+            for (let j = 1; j <= 3; j++) {
+              const cell = document.createElement('div');
+              cell.classList.add('cell', 'editable');
+              cell.dataset.row = i + 3 * Math.floor(boxIndex / 3);
+              cell.dataset.col = j + 3 * (boxIndex % 3);
+
+              cell.textContent = '';
+
+              cell.addEventListener('click', function () {
+                const value = prompt('Lütfen bir rakam girin (1-9):');
+
+                if (value === null || value === '') {
+                  cell.textContent = '';
+                } else if (/^\d{1}$/.test(value) && value >= 1 && value <= 9) {
+                  cell.textContent = value;
+                } else {
+                  alert(
+                    'Geçersiz giriş! Lütfen 1 ile 9 arasında bir rakam girin.'
+                  );
+                }
+              });
+
+              box.appendChild(cell);
+            }
+          }
+
+          board.appendChild(box);
+        }
+      }
+
+      createSudokuBoard();
+    </script>
+  </body>
+
+</html>
